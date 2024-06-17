@@ -9,7 +9,7 @@ public class Reserva {
 	private Integer numQuarto;
 	private Date checkin;
 	private Date checkout;
-	
+
 	private static SimpleDateFormat sdf = new SimpleDateFormat("dd/MM/yyyy");
 
 	public Reserva() {
@@ -47,20 +47,25 @@ public class Reserva {
 
 		return TimeUnit.DAYS.convert(diff, TimeUnit.MILLISECONDS);
 	}
-	public void updateDates(Date checkIn, Date checkOut) {
+
+	public String updateDates(Date checkIn, Date checkOut) {
+
+		Date now = new Date();
+
+		if (checkIn.before(now) || checkOut.before(now)) {
+			return "A data da reserva precisa ser feita para uma data futura";
+		}
+		if (!checkOut.after(checkIn)) {
+			return "Data de check-out tem que ser posterior a do check-in";
+		}
 		this.checkin = checkIn;
 		this.checkout = checkOut;
+		return null;
 	}
-@Override	
+
+	@Override
 	public String toString() {
-		return "Quarto: " 
-				+ numQuarto 
-				+ ", check - in: "
-				+ sdf.format(checkin)
-				+ ", check-out: "
-				+ sdf.format(checkout)
-				+ ", "
-				+ duration()
-				+ " noites.";
+		return "Quarto: " + numQuarto + ", check - in: " + sdf.format(checkin) + ", check-out: " + sdf.format(checkout)
+				+ ", " + duration() + " noites.";
 	}
 }
